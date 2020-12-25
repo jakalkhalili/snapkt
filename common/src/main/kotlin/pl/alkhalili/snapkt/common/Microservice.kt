@@ -37,7 +37,7 @@ abstract class Microservice : AbstractVerticle() {
         httpServer?.requestHandler(setupRoutes())?.listen(8080) {
             if (it.succeeded()) {
                 promise.complete()
-                logger.info("The Identity service is now working!")
+                logger.info("The ${this::class.qualifiedName} service is now working!")
             } else {
                 promise.fail(it.cause())
             }

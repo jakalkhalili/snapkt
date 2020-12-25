@@ -1,0 +1,51 @@
+version: '3.4'
+
+services:
+  # Identity Service
+  identity-service:
+    container_name: identity-service
+    image: snapkt/identity-service:latest
+    networks:
+      - envoy
+      - identity
+
+  identity-service-envoy:
+    container_name: identity-service-envoy
+    build:
+      context: ./envoy/identityService
+      dockerfile: Dockerfile
+    networks:
+      - envoy
+
+  # Media Service
+  media-service:
+    container_name: media-service
+    image: snapkt/media-service:latest
+    networks:
+      - envoy
+      - media
+  media-service-envoy:
+    container_name: media-service-envoy
+    build:
+      context: ./envoy/mediaService
+      dockerfile: Dockerfile
+    networks:
+      - envoy
+
+  # Envoy Front Proxy
+  envoy-front-proxy:
+    container_name: envoy-front-proxy
+    build:
+      context: ./envoy/frontproxy
+      dockerfile: Dockerfile
+    networks:
+      - envoy
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+      - "8001:8001"
+
+networks:
+  envoy: {}
+  identity: {}
+  media: {}

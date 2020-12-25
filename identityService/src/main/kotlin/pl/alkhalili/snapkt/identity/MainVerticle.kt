@@ -3,6 +3,7 @@ package pl.alkhalili.snapkt.identity
 import io.vertx.core.Promise
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.BodyHandler
+import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -36,17 +37,17 @@ class MainVerticle : Microservice() {
             route().handler(BodyHandler.create())
             route().handler(HttpErrorMiddleware())
             post("/$API_VERSION/authenticate").handler { ctx ->
-                GlobalScope.launch {
+                GlobalScope.launch(vertx.dispatcher()) {
                     routing.authenticate(ctx)
                 }
             }
             post("/$API_VERSION/create").handler { ctx ->
-                GlobalScope.launch {
+                GlobalScope.launch(vertx.dispatcher()) {
                     routing.createCredentials(ctx)
                 }
             }
             post("/$API_VERSION/validateToken").handler { ctx ->
-                GlobalScope.launch {
+                GlobalScope.launch(vertx.dispatcher()) {
                     routing.validateToken(ctx)
                 }
             }

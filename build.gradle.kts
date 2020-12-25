@@ -5,6 +5,7 @@ plugins {
     kotlin("jvm") version "1.3.72"
     application
     id("com.github.johnrengelman.shadow") version "5.2.0"
+    id("com.google.cloud.tools.jib") version "1.7.0"
 }
 
 allprojects {
@@ -28,6 +29,7 @@ subprojects {
         plugin("kotlin")
         plugin("application")
         plugin("com.github.johnrengelman.shadow")
+        plugin("com.google.cloud.tools.jib")
     }
 
     val launcherClassName = "io.vertx.core.Launcher"
@@ -62,4 +64,10 @@ subprojects {
             events = setOf(PASSED, SKIPPED, FAILED)
         }
     }
+
 }
+
+tasks.getByName("jibDockerBuild") {
+    enabled = false
+}
+

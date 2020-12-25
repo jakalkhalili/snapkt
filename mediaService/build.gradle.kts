@@ -25,3 +25,18 @@ tasks.withType<JavaExec> {
         "--launcher-class=$launcherClassName"
     )
 }
+
+jib {
+    from {
+        image = "gcr.io/distroless/java:11"
+    }
+    to {
+        image = "snapkt/media-service"
+        tags = setOf("v1")
+    }
+    container {
+        mainClass = "io.vertx.core.Launcher"
+        args = listOf("run", mainVerticleName, "--launcher-class=$launcherClassName")
+        ports = listOf("8080")
+    }
+}

@@ -1,4 +1,6 @@
 rootProject.name = "snapkt"
-include("identityService")
+
 include("common")
+
+include("identityService")
 include("mediaService")
