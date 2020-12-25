@@ -11,6 +11,7 @@
     <logger name="import com.zaxxer.hikari" level="debug"/>
     <logger name="com.h2database" level="debug"/>
     <logger name="io.vertx" level="debug"/>
+    <logger name="pl.alkhalili.snapkt" level="debug"/>
 
     <logger name="Exposed" level="debug">
         <appender-ref ref="STDOUT"/>

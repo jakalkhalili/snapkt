@@ -12,3 +12,10 @@ fun ResultRow.toCredentials(): Credentials = Credentials(
     password = this[CredentialsTable.password],
     phoneNumber = this[CredentialsTable.phoneNumber]
 )
+
+fun credentialsOf(username: String, password: String, phoneNumber: Int): Credentials = Credentials(
+    0,
+    username,
+    password,
+    phoneNumber
+)

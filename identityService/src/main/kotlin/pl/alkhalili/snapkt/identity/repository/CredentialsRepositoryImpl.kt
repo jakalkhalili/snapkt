@@ -2,7 +2,6 @@ package pl.alkhalili.snapkt.identity.repository
 
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-
 import pl.alkhalili.snapkt.identity.domain.Credentials
 import pl.alkhalili.snapkt.identity.domain.toCredentials
 
@@ -18,14 +17,14 @@ class CredentialsRepositoryImpl(private val database: Database) : CredentialsRep
         return credentials
     }
 
-    override fun insert(credentials: Credentials): Boolean {
-        return !transaction(database) {
+    override fun insert(credentials: Credentials): Credentials? {
+        return transaction(database) {
             CredentialsTable.insert {
                 it[username] = credentials.username
                 it[password] = credentials.password
                 it[phoneNumber] = credentials.phoneNumber
             }
-        }.resultedValues.isNullOrEmpty()
+        }.resultedValues?.get(0)?.toCredentials()
     }
 
     override fun update(credentials: Credentials) {
