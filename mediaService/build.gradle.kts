@@ -1,8 +1,9 @@
 dependencies {
     compile(project(":common"))
+
 }
 
-val mainVerticleName = "pl.alkhalili.snapkt.messaging.MainVerticle"
+val mainVerticleName = "pl.alkhalili.snapkt.media.MainVerticle"
 val watchForChange = "src/**/*"
 val doOnChange = "${projectDir}/gradlew classes"
 val launcherClassName = "io.vertx.core.Launcher"
