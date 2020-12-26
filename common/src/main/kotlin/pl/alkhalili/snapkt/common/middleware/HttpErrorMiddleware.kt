@@ -1,4 +1,4 @@
-package pl.alkhalili.snapkt.common
+package pl.alkhalili.snapkt.common.middleware
 
 import io.vertx.core.Handler
 import io.vertx.ext.web.RoutingContext

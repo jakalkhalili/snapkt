@@ -8,7 +8,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import pl.alkhalili.snapkt.common.HikariConnectionPool
-import pl.alkhalili.snapkt.common.HttpErrorMiddleware
+import pl.alkhalili.snapkt.common.middleware.HttpErrorMiddleware
+import pl.alkhalili.snapkt.common.middleware.HttpLoggingMiddleware
 import pl.alkhalili.snapkt.common.Microservice
 import pl.alkhalili.snapkt.identity.repository.CredentialsRepository
 import pl.alkhalili.snapkt.identity.repository.CredentialsRepositoryImpl
@@ -36,17 +37,18 @@ class MainVerticle : Microservice() {
         return Router.router(vertx).apply {
             route().handler(BodyHandler.create())
             route().handler(HttpErrorMiddleware())
-            post("/$API_VERSION/authenticate").handler { ctx ->
+            route().handler(HttpLoggingMiddleware())
+            post("/identity/$API_VERSION/authenticate").handler { ctx ->
                 GlobalScope.launch(vertx.dispatcher()) {
                     routing.authenticate(ctx)
                 }
             }
-            post("/$API_VERSION/create").handler { ctx ->
+            post("/identity/$API_VERSION/create").handler { ctx ->
                 GlobalScope.launch(vertx.dispatcher()) {
                     routing.createCredentials(ctx)
                 }
             }
-            post("/$API_VERSION/validateToken").handler { ctx ->
+            post("/identity/$API_VERSION/validateToken").handler { ctx ->
                 GlobalScope.launch(vertx.dispatcher()) {
                     routing.validateToken(ctx)
                 }

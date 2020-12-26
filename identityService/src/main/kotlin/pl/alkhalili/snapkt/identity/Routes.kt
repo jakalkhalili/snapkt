@@ -13,6 +13,11 @@ import pl.alkhalili.snapkt.identity.domain.requests.TokenValidationRequest
 
 class Routes(bus: EventBus) : Routing(bus) {
     suspend fun authenticate(ctx: RoutingContext) {
+        if(ctx.body == null) {
+            ctx.response().setStatusCode(401).end()
+            return
+        }
+
         val authenticationRequest: AuthenticationRequest =
             Gson().fromJson(ctx.bodyAsString, AuthenticationRequest::class.java)
 
@@ -30,6 +35,11 @@ class Routes(bus: EventBus) : Routing(bus) {
     }
 
     fun createCredentials(ctx: RoutingContext) {
+        if(ctx.body == null) {
+            ctx.response().setStatusCode(400).end()
+            return
+        }
+
         val req: CredentialsCreationRequest = Gson().fromJson(ctx.bodyAsString, CredentialsCreationRequest::class.java)
 
         eventBus.request<Void>(

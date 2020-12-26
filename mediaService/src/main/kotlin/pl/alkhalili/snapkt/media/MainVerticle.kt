@@ -8,7 +8,7 @@ import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import pl.alkhalili.snapkt.common.HikariConnectionPool
-import pl.alkhalili.snapkt.common.HttpErrorMiddleware
+import pl.alkhalili.snapkt.common.middleware.HttpErrorMiddleware
 import pl.alkhalili.snapkt.common.Microservice
 import pl.alkhalili.snapkt.common.identity.IdentityClient
 
@@ -28,8 +28,12 @@ class MainVerticle : Microservice() {
             route().handler(BodyHandler.create())
             route().handler(HttpErrorMiddleware())
 
-            post("/$API_VERSION/upload").handler { ctx ->
-                identityClient?.requireAuthorized(ctx)
+            post("/media/$API_VERSION/upload").handler { ctx ->
+                try {
+                    identityClient?.requireAuthorized(ctx)
+                } catch(e: Exception) {
+                    ctx.response().setStatusCode(401).end()
+                }
                 GlobalScope.launch(vertx.dispatcher()) {
                     ctx.response().setStatusCode(200).end("TODO: upload")
                 }
